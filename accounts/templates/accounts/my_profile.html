@@ -1,0 +1,18 @@
+{% extends 'base.html'%}
+{% load bootstrap4 %}
+
+
+{% block content %}
+<div class="container">
+    {% if user.is_authenticated%}
+    <p>Email: {{ user.email }}</p>
+    <p>City: {{ user.profile.home_city }}</p>
+    {% if user.is_authenticated and request.user.pk == user.pk %}
+        <a class="btn btn-outline-secondary" href="{% url "accounts:update_profile" %}" role="button">Update Profile</a>
+    {% endif %}
+    {% else %}
+        <a href="{% url "accounts:login" %}"><h3> Please login </h3></a>
+    {% endif %}
+
+</div>
+{% endblock %}
