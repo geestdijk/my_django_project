@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.urls import reverse
-from accounts.forms import SignupForm, UserForm, ProfileForm
 from django.contrib import messages
 from django.views.generic import TemplateView
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+
+from accounts.forms import SignupForm, UserForm, ProfileForm
 
 
 def signup(request):
@@ -13,10 +14,8 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            print("====================SAVED!!!")
             return redirect(reverse('home'))
     else:
-        print("=====================NOT VALID")
         form = SignupForm()
         args = {'form': form}
     return render(request, 'accounts/signup.html', args)
@@ -29,7 +28,6 @@ class ProfileDetailView(TemplateView):
         context = super().get_context_data(**kwargs)
         if context.get('pk'):
             context['user'] = User.objects.get(pk=self.kwargs.get('pk'))
-            print("Print:", context['user'])
             return context
         else:
             context['user'] = self.request.user
