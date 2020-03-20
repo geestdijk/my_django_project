@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'accounts',
+    'file_upload_app',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,7 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login'
 
 STATIC_URL = '/static/'
+
+#File uploading
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
