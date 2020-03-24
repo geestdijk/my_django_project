@@ -31,5 +31,9 @@
 {% else %}
 	<p>No image available.</p>
 {% endif %}
+<br>
+
 </div>
+<a href="{% url 'album:album_upload' %}"><button type="button" class="btn btn-info">Go to upload</button></a>
+
 {% endblock %}

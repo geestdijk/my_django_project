@@ -17,7 +17,7 @@ def album_upload(request):
             image = form.save(commit=False)
             image.user = request.user
             image.save()
-            return redirect('home')
+            return redirect('album:album_view', user=request.user.id)
     else:
         form = AlbumForm()
     return render(request, 'album_upload.html', {
