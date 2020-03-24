@@ -4,11 +4,12 @@ from django.conf import settings
 from os import listdir
 from django.views import generic
 from .models import AlbumFile
+from django.contrib.auth.decorators import login_required
 
 
 from .forms import AlbumForm
 
-
+@login_required
 def album_upload(request):
     if request.method == 'POST':
         form = AlbumForm(request.POST, request.FILES)
@@ -38,4 +39,8 @@ class AlbumView(generic.ListView):
     template_name = 'album_view.html'
 
     def get_queryset(self):
-        return AlbumFile.objects.filter(user=self.kwargs['user'])
+        return AlbumFile.objects.filter(user=self.kwargs['user']).order_by('-uploaded_at')[:5]
+
+def delete_image(request, image_pk):
+    image = AlbumFile.objects.get(pk=image_pk).delete()
+    return redirect('album:album_view', user=request.user.id)
