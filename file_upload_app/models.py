@@ -10,6 +10,6 @@ def user_directory_path(instance, filename):
 
 class AlbumFile(models.Model):
     description = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.FileField(upload_to=user_directory_path)
     uploaded_at = models.DateTimeField(auto_now=True)
