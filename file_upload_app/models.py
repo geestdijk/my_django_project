@@ -13,3 +13,7 @@ class AlbumFile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.FileField(upload_to=user_directory_path)
     uploaded_at = models.DateTimeField(auto_now=True)
+
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        super().delete()
