@@ -7,7 +7,8 @@ from .models import AlbumFile
 from django.contrib.auth.decorators import login_required
 
 
-from .forms import AlbumForm
+from .forms import AlbumForm, AvatarForm
+
 
 @login_required
 def album_upload(request):
@@ -21,6 +22,22 @@ def album_upload(request):
     else:
         form = AlbumForm()
     return render(request, 'album_upload.html', {
+        'form': form
+    })
+
+
+@login_required
+def avatar_upload(request):
+    if request.method == 'POST':
+        form = AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save(commit=False)
+            image.user = request.user
+            image.save()
+            return redirect('accounts:my_profile')
+    else:
+        form = AvatarForm()
+    return render(request, 'avatar_upload.html', {
         'form': form
     })
 
@@ -40,6 +57,7 @@ class AlbumView(generic.ListView):
 
     def get_queryset(self):
         return AlbumFile.objects.filter(user=self.kwargs['user']).order_by('-uploaded_at')[:5]
+
 
 def delete_image(request, image_pk):
     image = AlbumFile.objects.get(pk=image_pk).delete()

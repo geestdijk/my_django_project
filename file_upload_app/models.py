@@ -10,9 +10,7 @@ def user_directory_path(instance, filename):
     elif isinstance(instance, AlbumFile):
         return f'albums/user_{instance.user.id}/{filename}'
 
-
-
-class AlbumFile(models.Model):
+class AbstractImage(models.Model):
     description = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.FileField(upload_to=user_directory_path)
@@ -22,5 +20,12 @@ class AlbumFile(models.Model):
         self.image.storage.delete(self.image.name)
         super().delete()
 
-class AvatarImage(AlbumFile):
+    class Meta:
+        abstract = True
+
+
+class AlbumFile(AbstractImage):
     pass
+    
+class AvatarImage(AbstractImage):
+    description = models.CharField(max_length=255, default='')
