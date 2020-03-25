@@ -9,10 +9,9 @@
     <p>Email: {{ user.email }}</p>
     <p>City: {{ user.profile.home_city }}</p>
     {% if avatar %}
-    <img src="{{ avatar.image.url }}" alt="{{ avatar }}" class="img-thumbnail" width=200px>
+    <a href="{% url 'album:avatar_upload' %}"><img src="{{ avatar.image.url }}" alt="{{ avatar }}" class="img-thumbnail" width=200px></a>
     {% else %}
-    {% static "accounts/default_avatar.png" %} <br>
-    <img src="{% static "accounts/default_avatar.png" %}" alt="Default" class="img-thumbnail" width=200px>
+    <a href="{% url 'album:avatar_upload' %}"><img src="{% static "accounts/default_avatar.png" %}" alt="Default" class="img-thumbnail" width=200px></a>
     {% endif %}
     <br>
     {% if user.is_authenticated and request.user.pk == user.pk %}

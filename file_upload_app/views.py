@@ -34,7 +34,7 @@ def avatar_upload(request):
             image = form.save(commit=False)
             image.user = request.user
             image.save()
-            return redirect('accounts:my_profile')
+            return redirect('accounts:view_profile_with_pk', pk=request.user.id)
     else:
         form = AvatarForm()
     return render(request, 'avatar_upload.html', {
