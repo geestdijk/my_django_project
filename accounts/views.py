@@ -7,6 +7,7 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 
 from accounts.forms import SignupForm, UserForm, ProfileForm
+from file_upload_app.models import AvatarImage
 
 
 def signup(request):
@@ -28,9 +29,18 @@ class ProfileDetailView(TemplateView):
         context = super().get_context_data(**kwargs)
         if context.get('pk'):
             context['user'] = User.objects.get(pk=self.kwargs.get('pk'))
+            try:
+                avatar = AvatarImage.objects.filter(
+            user=self.kwargs.get('pk')).order_by('-uploaded_at')[0]
+            except IndexError:
+                avatar = None
+            context['avatar'] = avatar
             return context
         else:
             context['user'] = self.request.user
+
+        print('===', context)
+
         return context
 
 
