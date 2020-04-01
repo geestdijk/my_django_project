@@ -1,8 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.urls import reverse
-from django.contrib import messages
+from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView
+from django.contrib.auth.views import (
+    PasswordChangeView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 
@@ -31,7 +37,7 @@ class ProfileDetailView(TemplateView):
             context['user'] = User.objects.get(pk=self.kwargs.get('pk'))
             try:
                 avatar = AvatarImage.objects.filter(
-            user=self.kwargs.get('pk')).order_by('-uploaded_at')[0]
+                    user=self.kwargs.get('pk')).order_by('-uploaded_at')[0]
             except IndexError:
                 avatar = None
             context['avatar'] = avatar
@@ -64,3 +70,28 @@ def update_profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+
+class MyPasswordChangeView(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    success_url = reverse_lazy('home')
+
+
+class MyPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+    success_url = reverse_lazy('home')
+    email_template_name = 'accounts/password_reset_email.html'
+    subject_template_name = 'accounts/password_reset_subject.txt'
+
+
+class MyPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+    success_url = reverse_lazy('accounts:password_reset_complete')
+
+
+class MyPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'
