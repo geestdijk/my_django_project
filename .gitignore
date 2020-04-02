@@ -1,6 +1,8 @@
 
 # Created by https://www.gitignore.io/api/django,python,virtualenv,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=django,python,virtualenv,visualstudiocode
+#python-decouple
+settings.ini
 
 ### Django ###
 *.log
